@@ -5,48 +5,35 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-@Mojo(name = "fix-automatic-modules", defaultPhase = LifecyclePhase.PACKAGE)
-public class FixAutomaticModulesMojo extends AbstractMojo {
+@Mojo(name = "patch", defaultPhase = LifecyclePhase.PACKAGE)
+public class PatchMojo extends BaseMojo {
 	
-	@Parameter(required = true)
-	private File modulePath;
+	@Parameter
+	private boolean ignoreMissingDeps;
 	
-	@Parameter(required = true)
+	@Parameter
 	private String multiRelease;
 
 	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		String cwd = System.getProperty("user.dir");
-		
-		String javaHome = System.getProperty("java.home");
-		
-		String jdeps = javaHome + File.separator + "bin" + File.separator + "jdeps.exe";
-		String javac = javaHome + File.separator + "bin" + File.separator + "javac.exe";
-		
-		if (!modulePath.exists()) {
-			throw new MojoExecutionException("Modules folder does not exist!");
-		}
-		if (!modulePath.isDirectory()) {
-			throw new MojoExecutionException("Modules folder is not a directory!");
-		}
+	protected final void run() throws MojoExecutionException, MojoFailureException {
 		
 		File[] jars = modulePath.listFiles(file -> !file.isDirectory() && file.getName().endsWith(".jar"));
 		
@@ -76,18 +63,26 @@ public class FixAutomaticModulesMojo extends AbstractMojo {
 				
 				System.out.println("[" + jar.getName() + "] Generating module info");
 				
-				{	
-					ProcessBuilder builder = new ProcessBuilder(jdeps, "--ignore-missing-deps", "--multi-release", multiRelease, "--module-path", modulePath.getAbsolutePath(), "--generate-module-info", sources.getAbsolutePath(), jar.getAbsolutePath());
-					builder.directory(new File(cwd));
-					builder.redirectInput(Redirect.INHERIT);
-					builder.redirectOutput(Redirect.DISCARD);
-					builder.redirectError(Redirect.INHERIT);
+				{
+					List<String> command = new ArrayList<>();
 					
-					Process process = builder.start();
+					command.add(tool("jdeps"));
 					
-					if (process.waitFor() != 0) {
-						throw new Exception("[" + jar.getName() + "] Jdeps did not terminate successfully!");
+					if (ignoreMissingDeps) {
+						command.add("--ignore-missing-deps");
 					}
+					if (multiRelease != null) {
+						command.add("--multi-release");
+						command.add(multiRelease);
+					}
+					
+					command.add("--module-path");
+					command.add(modulePath.getAbsolutePath());
+					command.add("--generate-module-info");
+					command.add(sources.getAbsolutePath());
+					command.add(jar.getAbsolutePath());
+					
+					exec(command, "[" + jar.getName() + "] Jdeps did not terminate successfully!");
 				}
 				
 				// Unzip jar
@@ -132,17 +127,19 @@ public class FixAutomaticModulesMojo extends AbstractMojo {
 						
 						System.out.println("[" + jar.getName() + "] Compiling " + moduleInfoSource.getName());
 						
-						ProcessBuilder builder = new ProcessBuilder(javac, "--module-path", modulePath.getAbsolutePath(), "-d", classes.getAbsolutePath(), moduleInfoSource.getAbsolutePath());
-						builder.directory(new File(cwd));
-						builder.redirectInput(Redirect.INHERIT);
-						builder.redirectOutput(Redirect.DISCARD);
-						builder.redirectError(Redirect.INHERIT);
+						List<String> command = new ArrayList<>();
 						
-						Process process = builder.start();
+						command.add(tool("javac"));
 						
-						if (process.waitFor() != 0) {
-							throw new Exception("[" + jar.getName() + "] Javac did not terminate successfully!");
-						}
+						command.add("--module-path");
+						command.add(modulePath.getAbsolutePath());
+						
+						command.add("-d");
+						command.add(classes.getAbsolutePath());
+						
+						command.add(moduleInfoSource.getAbsolutePath());
+						
+						exec(command, "[" + jar.getName() + "] Javac did not terminate successfully!");
 						
 						// Package module info
 						
