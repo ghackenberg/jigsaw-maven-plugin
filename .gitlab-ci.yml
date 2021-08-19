@@ -1,0 +1,4 @@
+deploy:
+  image: maven:3.8.2-openjdk-16
+  script:
+    - 'mvn deploy -s ci_settings.xml'
