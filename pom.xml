@@ -9,13 +9,13 @@
 	<packaging>maven-plugin</packaging>
 	<name>Maven Java Platform Module System (JPMS) Plugin</name>
 	<description>Plugin to simplify software linking and packaging on top of the Java Platform Module system (JPMS).</description>
-	<url>https://gitlab.com/georg-hackenberg/fhooe/maven-jpms-plugin</url>
+	<url>https://gitlab.com/fhooe/maven-jpms-plugin</url>
 	<inceptionYear>2021</inceptionYear>
 
 	<scm>
-		<url>https://gitlab.com/georg-hackenberg/fhooe/maven-jpms-plugin</url>
-		<connection>git@gitlab.com:georg-hackenberg/fhooe/maven-jpms-plugin.git</connection>
-		<developerConnection>git@gitlab.com:georg-hackenberg/fhooe/maven-jpms-plugin.git</developerConnection>
+		<url>https://gitlab.com/hackenberg-fhooe/maven-jpms-plugin</url>
+		<connection>git@gitlab.com:fhooe/hackenberg-maven-jpms-plugin.git</connection>
+		<developerConnection>git@gitlab.com:hackenberg-fhooe/maven-jpms-plugin.git</developerConnection>
 	</scm>
 
 	<organization>
