@@ -62,7 +62,7 @@ public class PackageMojo extends BaseMojo {
 	private boolean winPerUserInstall;
 	
 	@Parameter
-	private boolean winChooseDir;
+	private boolean winDirChooser;
 	
 	@Parameter
 	private boolean winMenu;
@@ -126,8 +126,8 @@ public class PackageMojo extends BaseMojo {
 			if (winPerUserInstall) {
 				command.add("--win-per-user-install");
 			}
-			if (winChooseDir) {
-				command.add("--win-choose-dir");
+			if (winDirChooser) {
+				command.add("--win-dir-chooser");
 			}
 			if (winMenu) {
 				command.add("--win-menu");
