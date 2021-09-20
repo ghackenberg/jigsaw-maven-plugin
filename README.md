@@ -1,4 +1,4 @@
-# maven-jpms-plugin
+# maven-jigsaw-plugin
 
 ## Documents
 
