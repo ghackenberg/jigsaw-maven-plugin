@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.fhooe.hackenberg</groupId>
-	<artifactId>maven-jpms-plugin</artifactId>
+	<artifactId>maven-jigsaw-plugin</artifactId>
 	<version>1.0.0</version>
 	<packaging>maven-plugin</packaging>
 	<name>Maven Java Platform Module System (JPMS) Plugin</name>
@@ -13,9 +13,9 @@
 	<inceptionYear>2021</inceptionYear>
 
 	<scm>
-		<url>https://gitlab.com/hackenberg-fhooe/maven-jpms-plugin</url>
-		<connection>git@gitlab.com:fhooe/hackenberg-maven-jpms-plugin.git</connection>
-		<developerConnection>git@gitlab.com:hackenberg-fhooe/maven-jpms-plugin.git</developerConnection>
+		<url>https://github.com/ghackenberg/maven-jigsaw-plugin</url>
+		<connection>https://github.com/ghackenberg/maven-jigsaw-plugin.git</connection>
+		<developerConnection>https://github.com/ghackenberg/maven-jigsaw-plugin.git</developerConnection>
 	</scm>
 
 	<organization>
@@ -36,22 +36,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>gitlab-maven</id>
-			<url>https://gitlab.com/api/v4/projects/28977075/packages/maven</url>
-		</repository>
-	</repositories>
-	
 	<distributionManagement>
 		<repository>
-			<id>gitlab-maven</id>
-			<url>https://gitlab.com/api/v4/projects/28977075/packages/maven</url>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/ghackenberg/maven-jigsaw-plugin</url>
 		</repository>
-		<snapshotRepository>
-			<id>gitlab-maven</id>
-			<url>https://gitlab.com/api/v4/projects/28977075/packages/maven</url>
-		</snapshotRepository>
 	</distributionManagement>
 
 	<dependencies>
