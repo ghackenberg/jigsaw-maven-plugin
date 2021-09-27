@@ -59,9 +59,13 @@ Copy dependencies to **modules** folder:
 
 The **jigsaw-maven-plugin** provides the following build goals:
 
-### **patch** (based on [jdeps](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jdeps.html) and [javac](https://docs.oracle.com/en/java/javase/16/docs/specs/man/javac.html))
+### Goal `patch` (using [jdeps](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jdeps.html) and [javac](https://docs.oracle.com/en/java/javase/16/docs/specs/man/javac.html))
 
-Convert **unnamed modules** to named modules:
+Convert **unnamed modules** to named modules.
+
+#### Configuration details
+
+The **patch mojo** can be configured as follows:
 
 ```xml
 <plugin>
@@ -87,11 +91,17 @@ Convert **unnamed modules** to named modules:
 </plugin>
 ```
 
+#### Implementation details
 
+The **patch mojo** searched for unnamed modules (i.e. Java archives missing a **module-info.class** file) in the modules path. For each unnamed module the mojo generates a **module-info.java** file using the **jdeps** tool. Then, the mojo compiles the module descriptors and adds the to the original Java archives. Consequently, unnamed modules are turned into named modules.
 
-### **link** (based on [jlink](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jlink.html))
+### Goal `link` (using [jlink](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jlink.html))
 
-Link **named modules** to executable image:
+Link **named modules** to executable image.
+
+#### Configuration details
+
+The **link mojo** can be configured as follows:
 
 ```xml
 <plugin>
@@ -119,9 +129,17 @@ Link **named modules** to executable image:
 </plugin>
 ```
 
-### **package** (based on [jpackage](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jpackage.html))
+#### Implementation details
 
-Package **executable image** to OS-specific installer:
+The **link mojo** uses the **jlink** tool internally. The mojo simply wraps the command line call **jlink**.
+
+### Goal `package` (using [jpackage](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jpackage.html))
+
+Package **executable image** to OS-specific installer.
+
+#### Configuration details
+
+The **package mojo** can be configured as follows:
 
 ```xml
 <plugin>
@@ -182,3 +200,7 @@ Package **executable image** to OS-specific installer:
     </executions>
 </plugin>
 ```
+
+#### Implementation details
+
+The **package mojo** uses the **jpackage** tool internally. The mojo simply wraps the command line call **jpackage**.
