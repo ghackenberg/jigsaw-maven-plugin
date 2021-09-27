@@ -1,4 +1,4 @@
-package at.fhooe.hackenberg.maven;
+package io.github.ghackenberg.maven.plugins.jigsaw;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
