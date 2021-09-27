@@ -4,18 +4,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.ghackenberg</groupId>
-	<artifactId>maven-jigsaw-plugin</artifactId>
+	<artifactId>jigsaw-maven-plugin</artifactId>
 	<version>1.0.0</version>
 	<packaging>maven-plugin</packaging>
 	<name>Maven Java Platform Module System (JPMS) Plugin</name>
 	<description>Plugin to simplify software linking and packaging on top of the Java Platform Module system (JPMS).</description>
-	<url>https://gitlab.com/fhooe/maven-jpms-plugin</url>
+	<url>https://github.com/ghackenberg/jigsaw-maven-plugin</url>
 	<inceptionYear>2021</inceptionYear>
 
 	<scm>
-		<url>https://github.com/ghackenberg/maven-jigsaw-plugin</url>
-		<connection>https://github.com/ghackenberg/maven-jigsaw-plugin.git</connection>
-		<developerConnection>https://github.com/ghackenberg/maven-jigsaw-plugin.git</developerConnection>
+		<url>https://github.com/ghackenberg/jigsaw-maven-plugin</url>
+		<connection>https://github.com/ghackenberg/jigsaw-maven-plugin.git</connection>
+		<developerConnection>https://github.com/ghackenberg/jigsaw-maven-plugin.git</developerConnection>
 	</scm>
 
 	<organization>
