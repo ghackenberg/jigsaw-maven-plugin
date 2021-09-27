@@ -9,7 +9,11 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-
+/**
+ * Package mojo.
+ * 
+ * @author Georg Hackenberg <ghackenberg@gmail.com>
+ */
 @Mojo(name = "package", defaultPhase = LifecyclePhase.PACKAGE)
 public class PackageMojo extends BaseMojo {
 	

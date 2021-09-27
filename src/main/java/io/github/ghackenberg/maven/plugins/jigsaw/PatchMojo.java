@@ -23,6 +23,11 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+/**
+ * Patch mojo.
+ * 
+ * @author Georg Hackenberg <ghackenberg@gmail.com>
+ */
 @Mojo(name = "patch", defaultPhase = LifecyclePhase.PACKAGE)
 public class PatchMojo extends BaseMojo {
 	

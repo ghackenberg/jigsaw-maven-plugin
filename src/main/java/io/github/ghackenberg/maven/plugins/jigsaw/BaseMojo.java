@@ -9,6 +9,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 
+/**
+ * Common mojo base.
+ * 
+ * @author Georg Hackenberg <ghackenberg@gmail.com>
+ */
 public abstract class BaseMojo extends AbstractMojo {
 	
 	@Parameter(defaultValue = "${project.build.directory}/modules")

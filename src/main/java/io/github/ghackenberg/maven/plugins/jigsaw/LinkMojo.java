@@ -10,6 +10,11 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+/**
+ * Link mojo.
+ * 
+ * @author Georg Hackenberg <ghackenberg@gmail.com>
+ */
 @Mojo(name = "link", defaultPhase = LifecyclePhase.PACKAGE)
 public class LinkMojo extends BaseMojo {
 	
