@@ -13,7 +13,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 /**
  * Link mojo.
  * 
- * @author Georg Hackenberg <ghackenberg@gmail.com>
+ * @author Georg Hackenberg
  */
 @Mojo(name = "link", defaultPhase = LifecyclePhase.PACKAGE)
 public class LinkMojo extends BaseMojo {

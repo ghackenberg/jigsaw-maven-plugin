@@ -12,7 +12,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 /**
  * Common mojo base.
  * 
- * @author Georg Hackenberg <ghackenberg@gmail.com>
+ * @author Georg Hackenberg
  */
 public abstract class BaseMojo extends AbstractMojo {
 	

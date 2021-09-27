@@ -12,7 +12,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 /**
  * Package mojo.
  * 
- * @author Georg Hackenberg <ghackenberg@gmail.com>
+ * @author Georg Hackenberg
  */
 @Mojo(name = "package", defaultPhase = LifecyclePhase.PACKAGE)
 public class PackageMojo extends BaseMojo {
