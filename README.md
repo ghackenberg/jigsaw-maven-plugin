@@ -11,11 +11,18 @@ Read the folowing documents to learn more about the project:
 * [Changelog](./CHANGELOG.md)
 * [Contributing](./CONTRIBUTING.md)
 
+Also, do not hesitate to contact the project owner 😉 (ghackenberg@gmail.com).
+
 ## Preparations
 
-The **jigsaw-maven-plugin** requires the following preparations:
+The **jigsaw-maven-plugin** requires two preparational steps:
 
-### Output archive
+1. Output archive
+2. Copy dependencies
+
+In the following, each step is described in more detail.
+
+### Step 1: Output archive
 
 Output archive to **modules** folder:
 
@@ -30,7 +37,7 @@ Output archive to **modules** folder:
 </plugin>
 ```
 
-### Copy dependencies
+### Step 2: Copy dependencies
 
 Copy dependencies to **modules** folder:
 
@@ -57,11 +64,17 @@ Copy dependencies to **modules** folder:
 
 ## Goals
 
-The **jigsaw-maven-plugin** provides the following build goals:
+The **jigsaw-maven-plugin** provides three build goals:
+
+* `patch`
+* `link`
+* `package`
+
+In the following, each goal is described in more detail.
 
 ### Goal `patch` (using [jdeps](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jdeps.html) and [javac](https://docs.oracle.com/en/java/javase/16/docs/specs/man/javac.html))
 
-Convert **unnamed modules** to named modules.
+Convert **unnamed modules** (i.e. Java archives missing a **module-info.class** file) to named modules. This step is necessary for **jlink** and **jpackage** to work properly (see following sections). Unfortunatelly, both tools cannot process unnamed modules, which are common in many Java projects until today.
 
 #### Configuration details
 
@@ -97,7 +110,7 @@ The **patch mojo** searched for unnamed modules (i.e. Java archives missing a **
 
 ### Goal `link` (using [jlink](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jlink.html))
 
-Link **named modules** to executable image.
+Link **named modules** to executable images. Executable images only include the necessary Java modules. Consequently, smaller executable bundles can be achieved. The executable images can be packaged later using **jpackage** (see next section).
 
 #### Configuration details
 
@@ -135,7 +148,7 @@ The **link mojo** uses the **jlink** tool internally. The mojo simply wraps the 
 
 ### Goal `package` (using [jpackage](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jpackage.html))
 
-Package **executable image** to OS-specific installer.
+Package **executable image** to OS-specific installers. OS-specific installers can be used to install the Java application on any target machine running a compatible OS installation. Note that the installers also update previously installed versions of the same Java application. The installers can be built from the executable images generated with **jlink** (see previous section).
 
 #### Configuration details
 
