@@ -16,6 +16,9 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 public abstract class BaseMojo extends AbstractMojo {
 	
+	/**
+	 * Module path.
+	 */
 	@Parameter(defaultValue = "${project.build.directory}/modules")
 	protected File modulePath;
 	
@@ -39,10 +42,25 @@ public abstract class BaseMojo extends AbstractMojo {
 		run();
 	}
 	
+	/**
+	 * Get path to JDK tool. 
+	 * 
+	 * @param name Name of the JDK tool (e.g. javac).
+	 * 
+	 * @return Path to the JDK tool.
+	 */
 	protected String tool(String name) {
 		return new File(new File(javaHome, "bin"), name).getAbsolutePath();
 	}
 	
+	/**
+	 * Execute a command and check for errors.
+	 * 
+	 * @param command The command to execute.
+	 * @param errorMessage The error message to throw upon failure.
+	 * 
+	 * @throws Exception Thrown if command execution fails. 
+	 */
 	protected void exec(List<String> command, String errorMessage) throws Exception {
 		ProcessBuilder builder = new ProcessBuilder(command);
 		builder.directory(cwd);
@@ -57,6 +75,12 @@ public abstract class BaseMojo extends AbstractMojo {
 		}
 	}
 	
+	/**
+	 * Run the mojo.
+	 *  
+	 * @throws MojoExecutionException Execution exception.
+	 * @throws MojoFailureException Failure exception.
+	 */
 	protected abstract void run() throws MojoExecutionException, MojoFailureException;
 
 }
