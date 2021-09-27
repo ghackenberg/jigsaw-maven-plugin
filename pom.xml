@@ -29,6 +29,14 @@
 			<email>georg.hackenberg@fh-wels.at</email>
 		</developer>
 	</developers>
+	
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<properties>
 		<maven.compiler.target>16</maven.compiler.target>
