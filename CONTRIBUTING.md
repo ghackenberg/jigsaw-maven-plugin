@@ -1,3 +1,3 @@
 # Contributing
 
-TODO
+Send me an email 😉 (ghackenberg@gmail.com).
