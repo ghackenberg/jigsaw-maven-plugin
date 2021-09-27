@@ -59,7 +59,7 @@ Copy dependencies to **modules** folder:
 
 The **jigsaw-maven-plugin** provides the following build goals:
 
-### patch
+### **patch** (based on [jdeps](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jdeps.html) and [javac](https://docs.oracle.com/en/java/javase/16/docs/specs/man/javac.html))
 
 Convert **unnamed modules** to named modules:
 
@@ -87,7 +87,9 @@ Convert **unnamed modules** to named modules:
 </plugin>
 ```
 
-### link
+
+
+### **link** (based on [jlink](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jlink.html))
 
 Link **named modules** to executable image:
 
@@ -117,7 +119,7 @@ Link **named modules** to executable image:
 </plugin>
 ```
 
-### package
+### **package** (based on [jpackage](https://docs.oracle.com/en/java/javase/16/docs/specs/man/jpackage.html))
 
 Package **executable image** to OS-specific installer:
 
