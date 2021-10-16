@@ -18,7 +18,7 @@ jobs:
       - name: GitHub setup-java
         uses: actions/setup-java@v2
         with:
-          java-version: '16'
+          java-version: '9'
           distribution: 'adopt'
           server-id: ossrh
           server-username: MAVEN_USERNAME
