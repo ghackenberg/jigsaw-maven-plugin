@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.ghackenberg</groupId>
 	<artifactId>jigsaw-maven-plugin</artifactId>
-	<version>1.0.2</version>
+	<version>1.1.0</version>
 	<packaging>maven-plugin</packaging>
 	<name>Maven Java Platform Module System (JPMS) Plugin</name>
 	<description>Plugin to simplify software linking and packaging on top of the Java Platform Module system (JPMS).</description>

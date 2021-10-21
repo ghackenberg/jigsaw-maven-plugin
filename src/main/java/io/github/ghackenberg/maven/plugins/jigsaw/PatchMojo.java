@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -55,6 +57,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "patch", defaultPhase = LifecyclePhase.PACKAGE)
 public class PatchMojo extends BaseMojo {
 	
+	private static final Pattern PATTERN = Pattern.compile("^META-INF/versions/([0-9]*)/module-info.class$");
+	
+	private static final String JAVA_VERSION = System.getProperty("java.version");
+	
+	private static final String JAVA_VERSION_MAJOR = JAVA_VERSION.substring(0, JAVA_VERSION.indexOf('.'));
+	
 	@Parameter
 	private boolean ignoreMissingDeps;
 	
@@ -63,6 +71,10 @@ public class PatchMojo extends BaseMojo {
 
 	@Override
 	protected final void run() throws MojoExecutionException, MojoFailureException {
+		
+		String targetJavaVersion = multiRelease != null ? multiRelease : JAVA_VERSION_MAJOR;
+		
+		int targetJavaVersionNumber = Integer.parseInt(targetJavaVersion);
 		
 		File[] jars = modulePath.listFiles(file -> !file.isDirectory() && file.getName().endsWith(".jar"));
 		
@@ -73,10 +85,38 @@ public class PatchMojo extends BaseMojo {
 				System.out.println("[" + jar.getName() + "] Checking module info");
 				
 				try (ZipFile zip = new ZipFile(jar)) {
-					if (zip.getEntry("module-info.class") != null) {
-						continue;
+					Enumeration<? extends ZipEntry> iterator = zip.entries();
+					
+					boolean found = false;
+					
+					while (iterator.hasMoreElements()) {
+						// Get entry
+						ZipEntry entry = iterator.nextElement();
+						// Get name
+						String name = entry.getName();
+						// Check name
+						if (name.equals("module-info.class")) {
+							found = true;
+							break;
+						} else {
+							// Get match
+							Matcher matcher = PATTERN.matcher(name);
+							// Check match
+							if (matcher.find()) {
+								// Get version
+								String version = matcher.group(1);
+								// Parse version
+								int versionNumber = Integer.parseInt(version);
+								// Check version
+								if (versionNumber <= targetJavaVersionNumber) {
+									found = true;
+									break;
+								}
+							}
+						}
 					}
-					if (zip.getEntry("META-INF/versions/") != null) {
+					
+					if (found) {
 						continue;
 					}
 				}
