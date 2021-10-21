@@ -176,7 +176,7 @@ public class PatchMojo extends BaseMojo {
 						
 						System.out.println("[" + jar.getName() + "] Packaging " + moduleInfoClass.getName());
 						
-						FileSystem fileSystem = FileSystems.newFileSystem(jar.toPath(), new HashMap<>());
+						FileSystem fileSystem = FileSystems.newFileSystem(jar.toURI(), new HashMap<>());
 						
 						Path path = fileSystem.getPath("module-info.class");
 
