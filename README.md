@@ -84,7 +84,7 @@ The **patch mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <executions>
         <phase>package</phase>
         <!-- execute during package phase -->
@@ -120,7 +120,7 @@ The **link mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <executions>
         <phase>package</phase>
         <!-- execute during package phase -->
@@ -158,7 +158,7 @@ The **package mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <executions>
         <phase>package</phase>
         <!-- execute during package phase -->
