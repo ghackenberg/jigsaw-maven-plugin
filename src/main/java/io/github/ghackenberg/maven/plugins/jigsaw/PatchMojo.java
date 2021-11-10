@@ -27,6 +27,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -216,7 +217,7 @@ public class PatchMojo extends BaseMojo {
 						
 						System.out.println("[" + jar.getName() + "] Packaging " + moduleInfoClass.getName());
 						
-						FileSystem fileSystem = FileSystems.newFileSystem(jar.toURI(), new HashMap<>());
+						FileSystem fileSystem = FileSystems.newFileSystem(new URI("jar:" + jar.toURI()), new HashMap<>());
 						
 						Path path = fileSystem.getPath("module-info.class");
 
