@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.spi.ToolProvider;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -47,7 +48,10 @@ public class LinkMojo extends BaseMojo {
 
 	@Parameter(defaultValue = "${project.build.directory}/image")
 	private File output;
-	
+
+	@Parameter
+	private String launcher;
+
 	@Parameter
 	private boolean ignoreSigningInformation;
 
@@ -61,8 +65,9 @@ public class LinkMojo extends BaseMojo {
 			System.out.println("Linking modules");
 		
 			List<String> command = new ArrayList<>();
-			
-			command.add(tool("jlink"));
+
+			ToolProvider jlink = ToolProvider.findFirst("jlink").orElseThrow();
+
 			
 			command.add("--module-path");
 			command.add(modulePath.getAbsolutePath());
@@ -70,12 +75,14 @@ public class LinkMojo extends BaseMojo {
 			command.add(module);
 			command.add("--output");
 			command.add(output.getAbsolutePath());
+			if (launcher != null) {
+				command.add("--launcher=" + launcher);
+			}
 			
 			if (ignoreSigningInformation) {
 				command.add("--ignore-signing-information");
 			}
-			
-			exec(command, "Jlink did not terminate successfully!");
+			jlink.run(System.out, System.err, command.toArray(String[]::new));
 			
 		} catch (Exception e) {
 			System.err.println(e.getLocalizedMessage());
