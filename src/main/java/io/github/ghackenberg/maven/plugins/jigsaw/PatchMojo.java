@@ -41,143 +41,143 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 @Mojo(name = "patch", defaultPhase = LifecyclePhase.PACKAGE)
 public class PatchMojo extends BaseMojo {
-    
-    private static final int JAVA_VERSION_MAJOR = Runtime.version().major();
 
-    @Parameter
-    private boolean ignoreMissingDeps;
+	private static final int JAVA_VERSION_MAJOR = Runtime.version().major();
 
-    @Parameter
-    private String multiRelease;
+	@Parameter
+	private boolean ignoreMissingDeps;
 
-    @Override
-    protected final void run() throws MojoExecutionException, MojoFailureException {
-		
+	@Parameter
+	private String multiRelease;
+
+	@Override
+	protected final void run() throws MojoExecutionException, MojoFailureException {
+
 		getLog().info("Patching modules");
-		
-        int multiReleaseInternal = multiRelease != null ? Integer.parseInt(multiRelease) : JAVA_VERSION_MAJOR;
 
-        File[] jars = modulePath.listFiles(file -> !file.isDirectory() && file.getName().endsWith(".jar"));
+		int multiReleaseInternal = multiRelease != null ? Integer.parseInt(multiRelease) : JAVA_VERSION_MAJOR;
 
-        for (File jar : jars) {
-        	
-            try {
-            	
-                // Is modular?
+		File[] jars = modulePath.listFiles(file -> !file.isDirectory() && file.getName().endsWith(".jar"));
 
-                getLog().debug("[" + jar.getName() + "] Checking module info");
+		for (File jar : jars) {
 
-                try (JarFile zip = new JarFile(jar, false, 1, Version.parse(String.valueOf(multiReleaseInternal)))) {
-                    if (zip.stream().anyMatch(file -> file.getName().endsWith("module-info.class"))) {
-                        continue;
-                    }
-                }
+			try {
 
-                // Define folders
+				// Is modular?
 
-                File jarName = new File(modulePath, jar.getName().substring(0, jar.getName().length() - ".jar".length()));
-                
-                File additionalSources = new File(jarName, "sources");
-                File additionalClasses = new File(jarName, "classes");
+				getLog().debug("[" + jar.getName() + "] Checking module info");
 
-                // Generate module info
+				try (JarFile zip = new JarFile(jar, false, 1, Version.parse(String.valueOf(multiReleaseInternal)))) {
+					if (zip.stream().anyMatch(file -> file.getName().endsWith("module-info.class"))) {
+						continue;
+					}
+				}
 
-                getLog().debug("[" + jar.getName() + "] Generating module info");
-                
-                // Define params (JDEPS)
+				// Define folders
 
-                List<String> jdepsParams = new ArrayList<>();
+				File jarName = new File(modulePath, jar.getName().substring(0, jar.getName().length() - ".jar".length()));
 
-                if (ignoreMissingDeps) {
-                    jdepsParams.add("--ignore-missing-deps");
-                }
-                
-                jdepsParams.add("--multi-release");
-                jdepsParams.add(String.valueOf(multiReleaseInternal));
+				File additionalSources = new File(jarName, "sources");
+				File additionalClasses = new File(jarName, "classes");
 
-                jdepsParams.add("--module-path");
-                jdepsParams.add(modulePath.getAbsolutePath());
-                
-                jdepsParams.add("--generate-module-info");
-                jdepsParams.add(additionalSources.getAbsolutePath());
-                
-                jdepsParams.add(jar.getAbsolutePath());
-                
-                // Run tool (JDEPS)
-                
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                PrintStream printStream = new PrintStream(outputStream);
-                JDEPS.run(printStream, System.err, jdepsParams.toArray(new String[] {}));
+				// Generate module info
 
-                // Compile and package module info
+				getLog().debug("[" + jar.getName() + "] Generating module info");
 
-                for (File module : additionalSources.listFiles()) {
+				// Define params (JDEPS)
 
-                    File versions = new File(module, "versions");
+				List<String> jdepsParams = new ArrayList<>();
 
-                    for (File version : versions.listFiles()) {
+				if (ignoreMissingDeps) {
+					jdepsParams.add("--ignore-missing-deps");
+				}
 
-                        // Compile module info
+				jdepsParams.add("--multi-release");
+				jdepsParams.add(String.valueOf(multiReleaseInternal));
 
-                        File moduleInfoSource = new File(version, "module-info.java");
+				jdepsParams.add("--module-path");
+				jdepsParams.add(modulePath.getAbsolutePath());
 
-                        getLog().debug("[" + jar.getName() + "] Compiling " + moduleInfoSource.getName());
-                        
-                        // Define params (JAVAC)
+				jdepsParams.add("--generate-module-info");
+				jdepsParams.add(additionalSources.getAbsolutePath());
 
-                        List<String> javacParams = new ArrayList<>();
+				jdepsParams.add(jar.getAbsolutePath());
 
-                        javacParams.add("--module-path");
-                        javacParams.add(modulePath.getAbsolutePath());
+				// Run tool (JDEPS)
 
-                        javacParams.add("--patch-module");
-                        javacParams.add(module.getName() + "=" + jar.getAbsolutePath());
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				PrintStream printStream = new PrintStream(outputStream);
+				JDEPS.run(printStream, System.err, jdepsParams.toArray(new String[] {}));
 
-                        javacParams.add("-Xlint:-module");
-                        javacParams.add("-Xlint:-exports");
-                        javacParams.add("-Xlint:-requires-transitive-automatic");
-                        javacParams.add("-Xlint:-requires-automatic");
+				// Compile and package module info
 
-                        javacParams.add("-d");
-                        javacParams.add(additionalClasses.getAbsolutePath());
+				for (File module : additionalSources.listFiles()) {
 
-                        javacParams.add(moduleInfoSource.getAbsolutePath());
-                        
-                        // Run tool (JAVAC)
+					File versions = new File(module, "versions");
 
-                        JAVAC.run(System.out, System.err, javacParams.toArray(new String[] {}));
-                        
-                        // Package module info
+					for (File version : versions.listFiles()) {
 
-                        File moduleInfoClass = new File(additionalClasses, "module-info.class");
+						// Compile module info
 
-                        getLog().debug("[" + jar.getName() + "] Packaging " + moduleInfoClass.getName());
-                        
-                        // Define params (JAR)
-                        
-                        List<String> jarParams = new ArrayList<>();
-                        
-                        jarParams.add("uf");
-                        jarParams.add(jar.getAbsolutePath());
-                        
-                        jarParams.add("-C");
-                        jarParams.add(additionalClasses.getAbsolutePath());
-                        
-                        jarParams.add("module-info.class");
+						File moduleInfoSource = new File(version, "module-info.java");
 
-                        // Run tool (JAR)
+						getLog().debug("[" + jar.getName() + "] Compiling " + moduleInfoSource.getName());
 
-                        JAR.run(System.out, System.err, jarParams.toArray(new String[] {}));
-                        
-                    }
-                }
-                
-            } catch (Exception e) {
-                getLog().error(e.getLocalizedMessage(), e);
-            }
-            
-        }
-        
-    }
+						// Define params (JAVAC)
+
+						List<String> javacParams = new ArrayList<>();
+
+						javacParams.add("--module-path");
+						javacParams.add(modulePath.getAbsolutePath());
+
+						javacParams.add("--patch-module");
+						javacParams.add(module.getName() + "=" + jar.getAbsolutePath());
+
+						javacParams.add("-Xlint:-module");
+						javacParams.add("-Xlint:-exports");
+						javacParams.add("-Xlint:-requires-transitive-automatic");
+						javacParams.add("-Xlint:-requires-automatic");
+
+						javacParams.add("-d");
+						javacParams.add(additionalClasses.getAbsolutePath());
+
+						javacParams.add(moduleInfoSource.getAbsolutePath());
+
+						// Run tool (JAVAC)
+
+						JAVAC.run(System.out, System.err, javacParams.toArray(new String[] {}));
+
+						// Package module info
+
+						File moduleInfoClass = new File(additionalClasses, "module-info.class");
+
+						getLog().debug("[" + jar.getName() + "] Packaging " + moduleInfoClass.getName());
+
+						// Define params (JAR)
+
+						List<String> jarParams = new ArrayList<>();
+
+						jarParams.add("uf");
+						jarParams.add(jar.getAbsolutePath());
+
+						jarParams.add("-C");
+						jarParams.add(additionalClasses.getAbsolutePath());
+
+						jarParams.add("module-info.class");
+
+						// Run tool (JAR)
+
+						JAR.run(System.out, System.err, jarParams.toArray(new String[] {}));
+
+					}
+				}
+
+			} catch (Exception e) {
+				getLog().error(e.getLocalizedMessage(), e);
+			}
+
+		}
+
+	}
 
 }

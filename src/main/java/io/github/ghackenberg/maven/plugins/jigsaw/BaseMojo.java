@@ -39,12 +39,12 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 public abstract class BaseMojo extends AbstractMojo {
 
-    protected static final ToolProvider JAVAC = ToolProvider.findFirst("javac").get();
-    protected static final ToolProvider JAR = ToolProvider.findFirst("jar").get();
-    protected static final ToolProvider JDEPS = ToolProvider.findFirst("jdeps").get();
+	protected static final ToolProvider JAVAC = ToolProvider.findFirst("javac").get();
+	protected static final ToolProvider JAR = ToolProvider.findFirst("jar").get();
+	protected static final ToolProvider JDEPS = ToolProvider.findFirst("jdeps").get();
 	protected static final ToolProvider JLINK = ToolProvider.findFirst("jlink").get();
 	protected static final ToolProvider JPACKAGE = ToolProvider.findFirst("jpackage").get();
-	
+
 	/**
 	 * Module path.
 	 */
@@ -61,12 +61,12 @@ public abstract class BaseMojo extends AbstractMojo {
 		}
 		run();
 	}
-	
+
 	/**
 	 * Run the mojo.
-	 *  
+	 * 
 	 * @throws MojoExecutionException Execution exception.
-	 * @throws MojoFailureException Failure exception.
+	 * @throws MojoFailureException   Failure exception.
 	 */
 	protected abstract void run() throws MojoExecutionException, MojoFailureException;
 

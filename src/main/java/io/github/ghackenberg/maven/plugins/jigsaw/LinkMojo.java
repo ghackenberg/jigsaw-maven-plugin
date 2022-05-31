@@ -41,7 +41,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  */
 @Mojo(name = "link", defaultPhase = LifecyclePhase.PACKAGE)
 public class LinkMojo extends BaseMojo {
-	
+
 	@Parameter(defaultValue = "${project.artifactId}")
 	private String module;
 
@@ -56,42 +56,42 @@ public class LinkMojo extends BaseMojo {
 
 	@Override
 	protected final void run() throws MojoExecutionException, MojoFailureException {
-		
+
 		try {
-			
+
 			// Link modules
-			
+
 			getLog().info("Linking modules");
-			
+
 			// Define params (JLINK)
-		
+
 			List<String> params = new ArrayList<>();
-			
+
 			params.add("--module-path");
 			params.add(modulePath.getAbsolutePath());
-			
+
 			params.add("--add-modules");
 			params.add(module);
-			
+
 			params.add("--output");
 			params.add(output.getAbsolutePath());
-			
+
 			if (launcher != null) {
 				params.add("--launcher=" + launcher);
 			}
-			
+
 			if (ignoreSigningInformation) {
 				params.add("--ignore-signing-information");
 			}
-			
+
 			// Run tool (JLINK)
-			
+
 			JLINK.run(System.out, System.err, params.toArray(new String[] {}));
-			
+
 		} catch (Exception e) {
 			getLog().error(e.getLocalizedMessage(), e);
 		}
-		
+
 	}
 
 }
