@@ -23,8 +23,7 @@
 package io.github.ghackenberg.maven.plugins.jigsaw;
 
 import java.io.File;
-import java.lang.ProcessBuilder.Redirect;
-import java.util.List;
+import java.util.spi.ToolProvider;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -39,16 +38,18 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @author Georg Hackenberg
  */
 public abstract class BaseMojo extends AbstractMojo {
+
+    protected static final ToolProvider JAVAC = ToolProvider.findFirst("javac").get();
+    protected static final ToolProvider JAR = ToolProvider.findFirst("jar").get();
+    protected static final ToolProvider JDEPS = ToolProvider.findFirst("jdeps").get();
+	protected static final ToolProvider JLINK = ToolProvider.findFirst("jlink").get();
+	protected static final ToolProvider JPACKAGE = ToolProvider.findFirst("jpackage").get();
 	
 	/**
 	 * Module path.
 	 */
 	@Parameter(defaultValue = "${project.build.directory}/modules")
 	protected File modulePath;
-	
-	private File cwd;
-	
-	private File javaHome;
 
 	@Override
 	public final void execute() throws MojoExecutionException, MojoFailureException {
@@ -58,45 +59,7 @@ public abstract class BaseMojo extends AbstractMojo {
 		if (!modulePath.isDirectory()) {
 			throw new MojoExecutionException("Modules folder is not a directory!");
 		}
-		
-		cwd = new File(System.getProperty("user.dir"));
-		
-		javaHome = new File(System.getProperty("java.home"));
-		
 		run();
-	}
-	
-	/**
-	 * Get path to JDK tool. 
-	 * 
-	 * @param name Name of the JDK tool (e.g. javac).
-	 * 
-	 * @return Path to the JDK tool.
-	 */
-	protected String tool(String name) {
-		return new File(new File(javaHome, "bin"), name).getAbsolutePath();
-	}
-	
-	/**
-	 * Execute a command and check for errors.
-	 * 
-	 * @param command The command to execute.
-	 * @param errorMessage The error message to throw upon failure.
-	 * 
-	 * @throws Exception Thrown if command execution fails. 
-	 */
-	protected void exec(List<String> command, String errorMessage) throws Exception {
-		ProcessBuilder builder = new ProcessBuilder(command);
-		builder.directory(cwd);
-		builder.redirectInput(Redirect.INHERIT);
-		builder.redirectOutput(Redirect.DISCARD);
-		builder.redirectError(Redirect.INHERIT);
-		
-		Process process = builder.start();
-		
-		if (process.waitFor() != 0) {
-			throw new Exception(errorMessage);
-		}
 	}
 	
 	/**

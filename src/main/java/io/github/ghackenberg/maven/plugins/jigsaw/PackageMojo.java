@@ -109,70 +109,88 @@ public class PackageMojo extends BaseMojo {
 			
 			// Package application
 			
-			System.out.println("Packaging application");
+			getLog().info("Packaging application");
+			
+			// Define params (JPACKAGE)
 		
-			List<String> command = new ArrayList<>();
+			List<String> params = new ArrayList<>();
 			
-			command.add(tool("jpackage"));
+			params.add("--name");
+			params.add(name);
 			
-			command.add("--name");
-			command.add(name);
-			command.add("--vendor");
-			command.add(vendor);
-			command.add("--app-version");
-			command.add(appVersion);
-			command.add("--copyright");
-			command.add(copyright);
-			command.add("--description");
-			command.add(description);
-			command.add("--runtime-image");
-			command.add(runtimeImage.getAbsolutePath());
-			command.add("--module");
-			command.add(module + "/" + mainClass);
-			command.add("--dest");
-			command.add(dest.getAbsolutePath());
+			params.add("--vendor");
+			params.add(vendor);
+			
+			params.add("--app-version");
+			params.add(appVersion);
+			
+			params.add("--copyright");
+			params.add(copyright);
+			
+			params.add("--description");
+			params.add(description);
+			
+			params.add("--runtime-image");
+			params.add(runtimeImage.getAbsolutePath());
+			
+			params.add("--module");
+			params.add(module + "/" + mainClass);
+			
+			params.add("--dest");
+			params.add(dest.getAbsolutePath());
 			
 			if (icon != null) {
-				command.add("--icon");
-				command.add(icon.getAbsolutePath());
-			}
-			if (licenseFile != null) {
-				command.add("--license-file");
-				command.add(licenseFile.getAbsolutePath());
-			}
-			if (fileAssociations != null) {
-				command.add("--file-associations");
-				command.add(fileAssociations.getAbsolutePath());
-			}
-			if (javaOptions != null) {
-				command.add("--java-options");
-				command.add(javaOptions);
-			}
-			if (winUpgradeUuid != null) {
-				command.add("--win-upgrade-uuid");
-				command.add(winUpgradeUuid);
-			}
-			if (winPerUserInstall) {
-				command.add("--win-per-user-install");
-			}
-			if (winDirChooser) {
-				command.add("--win-dir-chooser");
-			}
-			if (winMenu) {
-				command.add("--win-menu");
-			}
-			if (winMenuGroup != null) {
-				command.add("--win-menu-group");
-				command.add(winMenuGroup);
-			}
-			if (winShortcut) {
-				command.add("--win-shortcut");
+				params.add("--icon");
+				params.add(icon.getAbsolutePath());
 			}
 			
-			exec(command, "Jpackage did not terminate successfully!");
+			if (licenseFile != null) {
+				params.add("--license-file");
+				params.add(licenseFile.getAbsolutePath());
+			}
+			
+			if (fileAssociations != null) {
+				params.add("--file-associations");
+				params.add(fileAssociations.getAbsolutePath());
+			}
+			
+			if (javaOptions != null) {
+				params.add("--java-options");
+				params.add(javaOptions);
+			}
+			
+			if (winUpgradeUuid != null) {
+				params.add("--win-upgrade-uuid");
+				params.add(winUpgradeUuid);
+			}
+			
+			if (winPerUserInstall) {
+				params.add("--win-per-user-install");
+			}
+			
+			if (winDirChooser) {
+				params.add("--win-dir-chooser");
+			}
+			
+			if (winMenu) {
+				params.add("--win-menu");
+			}
+			
+			if (winMenuGroup != null) {
+				params.add("--win-menu-group");
+				params.add(winMenuGroup);
+			}
+			
+			if (winShortcut) {
+				params.add("--win-shortcut");
+			}
+			
+			// Run tool (JPACKAGE)
+			
+			JPACKAGE.run(System.out, System.err, params.toArray(new String[] {}));
 			
 		} catch (Exception e) {
-			System.err.println(e.getLocalizedMessage());
+			getLog().error(e.getLocalizedMessage(), e);
 		}
 	}
 

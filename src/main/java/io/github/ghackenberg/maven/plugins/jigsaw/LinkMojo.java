@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.spi.ToolProvider;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -62,30 +61,35 @@ public class LinkMojo extends BaseMojo {
 			
 			// Link modules
 			
-			System.out.println("Linking modules");
-		
-			List<String> command = new ArrayList<>();
-
-			ToolProvider jlink = ToolProvider.findFirst("jlink").orElseThrow();
-
+			getLog().info("Linking modules");
 			
-			command.add("--module-path");
-			command.add(modulePath.getAbsolutePath());
-			command.add("--add-modules");
-			command.add(module);
-			command.add("--output");
-			command.add(output.getAbsolutePath());
+			// Define params (JLINK)
+		
+			List<String> params = new ArrayList<>();
+			
+			params.add("--module-path");
+			params.add(modulePath.getAbsolutePath());
+			
+			params.add("--add-modules");
+			params.add(module);
+			
+			params.add("--output");
+			params.add(output.getAbsolutePath());
+			
 			if (launcher != null) {
-				command.add("--launcher=" + launcher);
+				params.add("--launcher=" + launcher);
 			}
 			
 			if (ignoreSigningInformation) {
-				command.add("--ignore-signing-information");
+				params.add("--ignore-signing-information");
 			}
-			jlink.run(System.out, System.err, command.toArray(String[]::new));
+			
+			// Run tool (JLINK)
+			
+			JLINK.run(System.out, System.err, params.toArray(new String[] {}));
 			
 		} catch (Exception e) {
-			System.err.println(e.getLocalizedMessage());
+			getLog().error(e.getLocalizedMessage(), e);
 		}
 		
 	}
