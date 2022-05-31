@@ -151,7 +151,7 @@ public class PatchMojo extends BaseMojo {
 
 						File moduleInfoClass = new File(additionalClasses, "module-info.class");
 
-						getLog().debug("[" + jar.getName() + "] Packaging " + moduleInfoClass.getName());
+						getLog().info("[" + jar.getName() + "] Packaging " + moduleInfoClass.getName());
 
 						// Define params (JAR)
 
