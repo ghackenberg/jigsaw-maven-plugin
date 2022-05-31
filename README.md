@@ -86,20 +86,23 @@ The **patch mojo** can be configured as follows:
     <artifactId>jigsaw-maven-plugin</artifactId>
     <version>1.1.1</version>
     <executions>
-        <phase>package</phase>
-        <!-- execute during package phase -->
-        <goals>
-            <goal>patch</goal>
-            <!-- execute patch goal -->
-        </goals>
-        <configuration>
-            <modulePath>${project.build.directory}/modules</modulePath>
-            <!-- type = string, default = ${project.build.directory}/modules -->
-            <multiRelease>${maven.compiler.target}</multiRelease>
-            <!-- type = string -->
-            <ignoreMissingDeps>true</ignoreMissingDeps>
-            <!-- type = boolean -->
-        </configuration>
+        <execution>
+            <id>jigsaw-package</id>
+            <phase>package</phase>
+            <!-- execute during package phase -->
+            <goals>
+                <goal>patch</goal>
+                <!-- execute patch goal -->
+            </goals>
+            <configuration>
+                <modulePath>${project.build.directory}/modules</modulePath>
+                <!-- type = string, default = ${project.build.directory}/modules -->
+                <multiRelease>${maven.compiler.target}</multiRelease>
+                <!-- type = string -->
+                <ignoreMissingDeps>true</ignoreMissingDeps>
+                <!-- type = boolean -->
+            </configuration>
+        </execution>
     </executions>
 </plugin>
 ```
@@ -122,22 +125,25 @@ The **link mojo** can be configured as follows:
     <artifactId>jigsaw-maven-plugin</artifactId>
     <version>1.1.1</version>
     <executions>
-        <phase>package</phase>
-        <!-- execute during package phase -->
-        <goals>
-            <goal>link</goal>
-            <!-- execute link goal -->
-        </goals>
-        <configuration>
-            <modulePath>${project.build.directory}/modules</modulePath>
-            <!-- type = string, default = ${project.build.directory}/modules -->
-            <module>${project.artifactId}</module>
-            <!-- type = string, default = ${project.artifactId} -->
-            <ignoreSigningInfo>true</ignoreSigningInfo>
-            <!-- type = boolean -->
-            <output>${project.build.directory}/image</output>
-            <!-- type = file, default = ${project.build.directory}/image -->
-        </configuration>
+        <execution>
+            <id>jigsaw-link</id>
+            <phase>package</phase>
+            <!-- execute during package phase -->
+            <goals>
+                <goal>link</goal>
+                <!-- execute link goal -->
+            </goals>
+            <configuration>
+                <modulePath>${project.build.directory}/modules</modulePath>
+                <!-- type = string, default = ${project.build.directory}/modules -->
+                <module>${project.artifactId}</module>
+                <!-- type = string, default = ${project.artifactId} -->
+                <ignoreSigningInfo>true</ignoreSigningInfo>
+                <!-- type = boolean -->
+                <output>${project.build.directory}/image</output>
+                <!-- type = file, default = ${project.build.directory}/image -->
+            </configuration>
+        </execution>
     </executions>
 </plugin>
 ```
@@ -160,56 +166,59 @@ The **package mojo** can be configured as follows:
     <artifactId>jigsaw-maven-plugin</artifactId>
     <version>1.1.1</version>
     <executions>
-        <phase>package</phase>
-        <!-- execute during package phase -->
-        <goals>
-            <goal>package</goal>
-            <!-- execute package goal -->
-        </goals>
-        <configuration>
-            <runtimeImage>${project.build.directory}/image</runtimeImage>
-            <!-- type = file, default = ${project.build.directory}/image -->
-            <modulePath>${project.build.directory}/modules</modulePath>
-            <!-- type = string, default = ${project.build.directory}/modules -->
-            <module>${project.artifactId</module>
-            <!-- type = string, default = ${project.artifactId} -->
-            <mainClass>path.to.Main</mainClass>
-            <!-- type = string, required = true -->
-            <ignoreSigningInfo>true</ignoreSigningInfo>
-            <!-- type = boolean -->
-            <javaOptions>-Xmx64m</javaOptions>
-            <!-- type = string -->
-            <name>${project.name}</name>
-            <!-- type = string, default = ${project.name} -->
-            <appVersion>${project.version}</appVersion>
-            <!-- type = string, default = ${project.version} -->
-            <description>${project.description}</description>
-            <!-- type = file -->
-            <vendor>${project.organization.name}</vendor>
-            <!-- type = string, default = ${project.organization.name} -->
-            <copyright>${project.organization.name}</copyright>
-            <!-- type = string, default = ${project.organization.name} -->
-            <licenseFile>path/to/license.rtf</licenseFile>
-            <!-- type = file -->
-            <icon>path/to/icon.ico</icon>
-            <!-- type = string -->
-            <fileAssociations>path/to/associations.properties</fileAssociations>
-            <!-- type = file -->
-            <winUpgradeUuid>...</winUpgradeUuid>
-            <!-- type = string -->
-            <winPerUserInstall>true</winPerUserInstall>
-            <!-- type = boolean -->
-            <winDirChooser>true</winDirChooser>
-            <!-- type = boolean -->
-            <winShortcut>true</winShortcut>
-            <!-- type = boolean -->
-            <winMenu>true</winMenu>
-            <!-- type = boolean -->
-            <winMenuGroup>${project.organization.name}</winMenuGroup>
-            <!-- type = string -->
-            <dest>${project.build.directory}</dest>
-            <!-- type = file, default = ${project.build.directory} -->
-        </configuration>
+        <execution>
+            <id>jigsaw-package</id>
+            <phase>package</phase>
+            <!-- execute during package phase -->
+            <goals>
+                <goal>package</goal>
+                <!-- execute package goal -->
+            </goals>
+            <configuration>
+                <runtimeImage>${project.build.directory}/image</runtimeImage>
+                <!-- type = file, default = ${project.build.directory}/image -->
+                <modulePath>${project.build.directory}/modules</modulePath>
+                <!-- type = string, default = ${project.build.directory}/modules -->
+                <module>${project.artifactId</module>
+                <!-- type = string, default = ${project.artifactId} -->
+                <mainClass>path.to.Main</mainClass>
+                <!-- type = string, required = true -->
+                <ignoreSigningInfo>true</ignoreSigningInfo>
+                <!-- type = boolean -->
+                <javaOptions>-Xmx64m</javaOptions>
+                <!-- type = string -->
+                <name>${project.name}</name>
+                <!-- type = string, default = ${project.name} -->
+                <appVersion>${project.version}</appVersion>
+                <!-- type = string, default = ${project.version} -->
+                <description>${project.description}</description>
+                <!-- type = file -->
+                <vendor>${project.organization.name}</vendor>
+                <!-- type = string, default = ${project.organization.name} -->
+                <copyright>${project.organization.name}</copyright>
+                <!-- type = string, default = ${project.organization.name} -->
+                <licenseFile>path/to/license.rtf</licenseFile>
+                <!-- type = file -->
+                <icon>path/to/icon.ico</icon>
+                <!-- type = string -->
+                <fileAssociations>path/to/associations.properties</fileAssociations>
+                <!-- type = file -->
+                <winUpgradeUuid>...</winUpgradeUuid>
+                <!-- type = string -->
+                <winPerUserInstall>true</winPerUserInstall>
+                <!-- type = boolean -->
+                <winDirChooser>true</winDirChooser>
+                <!-- type = boolean -->
+                <winShortcut>true</winShortcut>
+                <!-- type = boolean -->
+                <winMenu>true</winMenu>
+                <!-- type = boolean -->
+                <winMenuGroup>${project.organization.name}</winMenuGroup>
+                <!-- type = string -->
+                <dest>${project.build.directory}</dest>
+                <!-- type = file, default = ${project.build.directory} -->
+            </configuration>
+        </execution>
     </executions>
 </plugin>
 ```
