@@ -68,13 +68,13 @@ public class LinkMojo extends BaseMojo {
 			List<String> params = new ArrayList<>();
 
 			params.add("--module-path");
-			params.add(modulePath.getAbsolutePath());
+			params.add(getModulePath());
 
 			params.add("--add-modules");
 			params.add(module);
 
 			params.add("--output");
-			params.add(output.getAbsolutePath());
+			params.add(getRelativePath(output));
 
 			if (launcher != null) {
 				params.add("--launcher=" + launcher);
@@ -86,10 +86,10 @@ public class LinkMojo extends BaseMojo {
 
 			// Run tool (JLINK)
 
-			JLINK.run(System.out, System.err, params.toArray(new String[] {}));
+			call("> ", "jlink", params);
 
 		} catch (Exception e) {
-			getLog().error(e.getLocalizedMessage(), e);
+			throw new MojoExecutionException(e);
 		}
 
 	}

@@ -131,27 +131,27 @@ public class PackageMojo extends BaseMojo {
 			params.add(description);
 
 			params.add("--runtime-image");
-			params.add(runtimeImage.getAbsolutePath());
+			params.add(getRelativePath(runtimeImage));
 
 			params.add("--module");
 			params.add(module + "/" + mainClass);
 
 			params.add("--dest");
-			params.add(dest.getAbsolutePath());
+			params.add(getRelativePath(dest));
 
 			if (icon != null) {
 				params.add("--icon");
-				params.add(icon.getAbsolutePath());
+				params.add(getRelativePath(icon));
 			}
 
 			if (licenseFile != null) {
 				params.add("--license-file");
-				params.add(licenseFile.getAbsolutePath());
+				params.add(getRelativePath(licenseFile));
 			}
 
 			if (fileAssociations != null) {
 				params.add("--file-associations");
-				params.add(fileAssociations.getAbsolutePath());
+				params.add(getRelativePath(fileAssociations));
 			}
 
 			if (javaOptions != null) {
@@ -187,10 +187,10 @@ public class PackageMojo extends BaseMojo {
 
 			// Run tool (JPACKAGE)
 
-			JPACKAGE.run(System.out, System.err, params.toArray(new String[] {}));
+			call("> ", "jpackage", params);
 
 		} catch (Exception e) {
-			getLog().error(e.getLocalizedMessage(), e);
+			throw new MojoExecutionException(e);
 		}
 	}
 

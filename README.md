@@ -84,7 +84,7 @@ The **patch mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <executions>
         <execution>
             <id>jigsaw-package</id>
@@ -123,7 +123,7 @@ The **link mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <executions>
         <execution>
             <id>jigsaw-link</id>
@@ -164,7 +164,7 @@ The **package mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <executions>
         <execution>
             <id>jigsaw-package</id>
@@ -179,7 +179,7 @@ The **package mojo** can be configured as follows:
                 <!-- type = file, default = ${project.build.directory}/image -->
                 <modulePath>${project.build.directory}/modules</modulePath>
                 <!-- type = string, default = ${project.build.directory}/modules -->
-                <module>${project.artifactId</module>
+                <module>${project.artifactId}</module>
                 <!-- type = string, default = ${project.artifactId} -->
                 <mainClass>path.to.Main</mainClass>
                 <!-- type = string, required = true -->
