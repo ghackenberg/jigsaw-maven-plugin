@@ -29,7 +29,7 @@ Output archive to **modules** folder:
 ```xml
 <plugin>
     <artifactId>maven-jar-plugin</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <configuration>
         <outputDirectory>${project.build.directory}/modules</outputDirectory>
         <!-- output to ${project.build.directory}/modules -->
@@ -44,7 +44,7 @@ Copy dependencies to **modules** folder:
 ```xml
 <plugin>
     <artifactId>maven-dependency-plugin</artifactId>
-    <version>3.2.0</version>
+    <version>3.4.0</version>
     <executions>
         <execution>
             <phase>package</phase>
@@ -84,7 +84,7 @@ The **patch mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <executions>
         <execution>
             <id>jigsaw-package</id>
@@ -123,7 +123,7 @@ The **link mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <executions>
         <execution>
             <id>jigsaw-link</id>
@@ -164,7 +164,7 @@ The **package mojo** can be configured as follows:
 <plugin>
     <groupId>io.github.ghackenberg</groupId>
     <artifactId>jigsaw-maven-plugin</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <executions>
         <execution>
             <id>jigsaw-package</id>
