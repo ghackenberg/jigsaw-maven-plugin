@@ -72,7 +72,7 @@ public abstract class BaseMojo extends AbstractMojo {
 	}
 	
 	protected final String getModulePath() {
-		return new File(System.getProperty("java.home"), "jmods").getAbsolutePath() + ";" + getRelativePath(modulePath);
+		return new File(System.getProperty("java.home"), "jmods").getAbsolutePath() + System.getProperty("path.separator")  + getRelativePath(modulePath);
 	}
 	
 	protected final String getRelativePath(File file) {
