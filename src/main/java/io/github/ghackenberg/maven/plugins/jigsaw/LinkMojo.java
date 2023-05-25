@@ -25,6 +25,7 @@ package io.github.ghackenberg.maven.plugins.jigsaw;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -47,6 +48,9 @@ public class LinkMojo extends BaseMojo {
 
 	@Parameter(defaultValue = "${project.build.directory}/image")
 	private File output;
+
+	@Parameter(defaultValue = "")
+	private String jlinkOptions;
 
 	@Parameter
 	private String launcher;
@@ -82,6 +86,10 @@ public class LinkMojo extends BaseMojo {
 
 			if (ignoreSigningInformation) {
 				params.add("--ignore-signing-information");
+			}
+
+			if (jlinkOptions != null) {
+				Stream.of(jlinkOptions.split(",")).forEach(params::add);
 			}
 
 			// Run tool (JLINK)
