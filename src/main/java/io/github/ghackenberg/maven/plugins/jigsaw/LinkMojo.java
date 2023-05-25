@@ -88,7 +88,9 @@ public class LinkMojo extends BaseMojo {
 				params.add("--ignore-signing-information");
 			}
 
-			Stream.of(jlinkOptions.split(",")).forEach(params::add);
+			if (jlinkOptions != null) {
+				Stream.of(jlinkOptions.split(",")).forEach(params::add);
+			}
 
 			// Run tool (JLINK)
 
