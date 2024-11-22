@@ -87,7 +87,7 @@ The **patch mojo** can be configured as follows:
     <version>1.1.3</version>
     <executions>
         <execution>
-            <id>jigsaw-package</id>
+            <id>jigsaw-patch</id>
             <phase>package</phase>
             <!-- execute during package phase -->
             <goals>
