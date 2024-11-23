@@ -142,6 +142,8 @@ The **link mojo** can be configured as follows:
                 <!-- type = boolean -->
                 <output>${project.build.directory}/image</output>
                 <!-- type = file, default = ${project.build.directory}/image -->
+                <jlinkOptions>--no-header-files,--no-man-pages,--strip-debug,--bind-services</jlinkOptions>
+                <!-- type = string, default = "" -->
             </configuration>
         </execution>
     </executions>
